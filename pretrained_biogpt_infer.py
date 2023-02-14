@@ -1,9 +1,8 @@
-import torch
 from fairseq.models.transformer_lm import TransformerLanguageModel
 
 
 m = TransformerLanguageModel.from_pretrained(
-        "checkpoints/Pre-trained-BioGPT",
+    "checkpoints/Pre-trained-BioGPT",
         "checkpoint.pt",
         "data",
         tokenizer='moses',
