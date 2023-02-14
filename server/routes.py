@@ -1,4 +1,4 @@
-from server.resources.run_biogpt import RunBioGptApi
+from resources.run_biogpt import RunBioGptApi
 
 
 def init_routes(api):

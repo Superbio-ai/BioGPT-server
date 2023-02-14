@@ -12,7 +12,7 @@ def set_logging(application):
     )
 
     # Create log file if doesn't exist
-    open(file, 'w+').close()
+    f = open(file, 'w+').close()
 
     flask_handler = RotatingFileHandler(
         file,

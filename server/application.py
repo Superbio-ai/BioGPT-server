@@ -3,8 +3,8 @@ from flask_cors import CORS
 from flask_restful import Api
 from flask_bcrypt import Bcrypt
 
-from server.log import set_logging
-from server.routes import init_routes
+from log import set_logging
+from routes import init_routes
 
 application = Flask(__name__)
 CORS = CORS(application)
