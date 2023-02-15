@@ -69,20 +69,18 @@ tar -zxvf Pre-trained-BioGPT.tgz
 
 ## Example Usage
 Use pre-trained BioGPT model in your code:
-
 ```python
 import torch
 from fairseq.models.transformer_lm import TransformerLanguageModel
-
 m = TransformerLanguageModel.from_pretrained(
-    "checkpoints/Pre-trained-BioGPT",
-    "checkpoint.pt",
-    "data",
-    tokenizer='moses',
-    bpe='fastbpe',
-    bpe_codes="data/bpecodes",
-    min_len=100,
-    max_len_b=1024)
+        "checkpoints/Pre-trained-BioGPT", 
+        "checkpoint.pt", 
+        "data",
+        tokenizer='moses', 
+        bpe='fastbpe', 
+        bpe_codes="data/bpecodes",
+        min_len=100,
+        max_len_b=1024)
 m.cuda()
 src_tokens = m.encode("COVID-19 is")
 generate = m.generate([src_tokens], beam=5)[0]
@@ -91,22 +89,20 @@ print(output)
 ```
 
 Use fine-tuned BioGPT model on KD-DTI for drug-target-interaction in your code:
-
 ```python
 import torch
 from src.transformer_lm_prompt import TransformerLanguageModelPrompt
-
 m = TransformerLanguageModelPrompt.from_pretrained(
-    "checkpoints/RE-DTI-BioGPT",
-    "checkpoint_avg.pt",
-    "data/KD-DTI/relis-bin",
-    tokenizer='moses',
-    bpe='fastbpe',
-    bpe_codes="data/bpecodes",
-    max_len_b=1024,
-    beam=1)
+        "checkpoints/RE-DTI-BioGPT", 
+        "checkpoint_avg.pt", 
+        "data/KD-DTI/relis-bin",
+        tokenizer='moses', 
+        bpe='fastbpe', 
+        bpe_codes="data/bpecodes",
+        max_len_b=1024,
+        beam=1)
 m.cuda()
-src_text = ""  # input text, e.g., a PubMed abstract
+src_text="" # input text, e.g., a PubMed abstract
 src_tokens = m.encode(src_text)
 generate = m.generate([src_tokens], beam=args.beam)[0]
 output = m.decode(generate[0]["tokens"])
