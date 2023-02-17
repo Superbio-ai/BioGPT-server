@@ -1,5 +1,6 @@
 #Fetch our GPU docker base
-FROM 221497708189.dkr.ecr.us-west-2.amazonaws.com/ml_resources:pytorch_gpu_ecs_470
+#FROM 221497708189.dkr.ecr.us-west-2.amazonaws.com/ml_resources:pytorch_gpu_ecs_470
+FROM python:3.8-slim-buster
 
 RUN apt -y update &&\
     apt -y upgrade &&\
@@ -20,28 +21,30 @@ RUN export MOSES=${PWD}/mosesdecoder
 RUN git clone https://github.com/glample/fastBPE.git
 RUN export FASTBPE=${PWD}/fastBPE
 WORKDIR fastBPE/
-RUN g++ -std=c++11 -pthread -O3 fastBPE/main.cc -IfastBPE -o fast
+#RUN g++ -std=c++11 -pthread -O3 fastBPE/main.cc -IfastBPE -o fast
 
 WORKDIR /app/BioGPT
 
 #Install requirements and upgrade cudatoolkit
+COPY requirements.txt .
 RUN pip install -r requirements.txt
-RUN conda install -y pytorch==1.12.0 torchvision==0.13.0 torchaudio==0.12.0 cudatoolkit=11.6 -c pytorch -c conda-forge
+RUN #conda install -y pytorch==1.12.0 torchvision==0.13.0 torchaudio==0.12.0 cudatoolkit=11.6 -c pytorch -c conda-forge
 
 #pip installation for NOT FOUND fastBPE error
-RUN pip install fastBPE
+RUN #pip install fastBPE
 
 #Install models
 WORKDIR /app/BioGPT
-COPY server .
-COPY data .
+COPY server server/
+COPY application.py .
+COPY data data/
 RUN mkdir -p checkpoints/
-WORKDIR /app/BioGPT/checkpoints
+#WORKDIR /app/BioGPT/checkpoints
 
-#Pre-Trained BioGPT
-RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/Pre-trained-BioGPT.tgz &&\
-    tar -zxvf Pre-trained-BioGPT.tgz &&\
-    rm Pre-trained-BioGPT.tgz
+##Pre-Trained BioGPT
+#RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/Pre-trained-BioGPT.tgz &&\
+#    tar -zxvf Pre-trained-BioGPT.tgz &&\
+#    rm Pre-trained-BioGPT.tgz
 
 ##Pre-Trained BioGPT-Large
 #RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/Pre-trained-BioGPT-Large.tgz &&\
@@ -81,15 +84,15 @@ RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoint
 WORKDIR /app/BioGPT
 
 #Run preprocess for all models
-RUN export MOSES=${PWD}/mosesdecoder &&\
-    export FASTBPE=${PWD}/fastBPE &&\ 
-    for folder in DC-HoC QA-PubMedQA RE-BC5CDR RE-DDI RE-DTI; \
-    do \
-        cd /app/BioGPT/examples/$folder && bash preprocess.sh && cd ../../; \
-    done &&\
-    cp data/biogpt_large_bpecodes data/biogpt_large_dict.txt data/PubMedQA/raw/ &&\
-    cd /app/BioGPT/examples/QA-PubMedQA &&\
-    bash preprocess_large.sh &&\
-    cd ../../
+#RUN export MOSES=${PWD}/mosesdecoder &&\
+#    export FASTBPE=${PWD}/fastBPE &&\
+#    for folder in DC-HoC QA-PubMedQA RE-BC5CDR RE-DDI RE-DTI; \
+#    do \
+#        cd /app/BioGPT/examples/$folder && bash preprocess.sh && cd ../../; \
+#    done &&\
+#    cp data/biogpt_large_bpecodes data/biogpt_large_dict.txt data/PubMedQA/raw/ &&\
+#    cd /app/BioGPT/examples/QA-PubMedQA &&\
+#    bash preprocess_large.sh &&\
+#    cd ../../
 
 ENTRYPOINT [ "python3", "-m" , "application"]
