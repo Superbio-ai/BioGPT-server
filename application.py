@@ -17,8 +17,8 @@ init_routes(API)
 set_logging(application)
 
 # pre-load all models and config to speed up the request calculation time
-_ = Models()
-_ = Config()
+# _ = Models()
+# _ = Config()
 
 if __name__ == "__main__":
     application.run(host='0.0.0.0', port=8001)
