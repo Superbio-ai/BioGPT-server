@@ -16,6 +16,7 @@ bcrypt = Bcrypt(application)
 init_routes(API)
 set_logging(application)
 
+
 if __name__ == "__main__":
     # pre-load all models and config to speed up the request calculation time
     _ = Models()

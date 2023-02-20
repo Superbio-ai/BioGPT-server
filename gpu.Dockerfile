@@ -94,4 +94,6 @@ RUN export MOSES=${PWD}/mosesdecoder &&\
     bash preprocess_large.sh &&\
     cd ../../
 
-ENTRYPOINT [ "python3", "-m" , "application"]
+RUN pip install gunicorn
+
+ENTRYPOINT [ "gunicorn", "--bind", "0.0.0.0:8000", "application:application" ]
