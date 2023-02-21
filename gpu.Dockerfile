@@ -25,6 +25,7 @@ RUN g++ -std=c++11 -pthread -O3 fastBPE/main.cc -IfastBPE -o fast
 WORKDIR /app/BioGPT
 
 #Install requirements and upgrade cudatoolkit
+COPY requirements.txt .
 RUN pip install -r requirements.txt
 RUN conda install -y pytorch==1.12.0 torchvision==0.13.0 torchaudio==0.12.0 cudatoolkit=11.6 -c pytorch -c conda-forge
 
@@ -33,8 +34,9 @@ RUN pip install fastBPE
 
 #Install models
 WORKDIR /app/BioGPT
-COPY server .
-COPY data .
+COPY server server/
+COPY data data/
+COPY application.py .
 RUN mkdir -p checkpoints/
 WORKDIR /app/BioGPT/checkpoints
 
@@ -43,41 +45,40 @@ RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoint
     tar -zxvf Pre-trained-BioGPT.tgz &&\
     rm Pre-trained-BioGPT.tgz
 
-##Pre-Trained BioGPT-Large
-#RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/Pre-trained-BioGPT-Large.tgz &&\
-#    tar -zxvf Pre-trained-BioGPT-Large.tgz &&\
-#    rm Pre-trained-BioGPT-Large.tgz
-#
-##QA-PubMedQA-BioGPT
-#RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/QA-PubMedQA-BioGPT.tgz &&\
-#    tar -zxvf QA-PubMedQA-BioGPT.tgz &&\
-#    rm QA-PubMedQA-BioGPT.tgz
-#
-##QA-PubMedQA-BioGPT-Large
-#RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/QA-PubMedQA-BioGPT-Large.tgz &&\
-#    tar -zxvf QA-PubMedQA-BioGPT-Large.tgz &&\
-#    rm QA-PubMedQA-BioGPT-Large.tgz
-#
-##RE-BC5CDR-BioGPT
-#RUN https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/RE-BC5CDR-BioGPT.tgz &&\
-#    tar -zxvf RE-BC5CDR-BioGPT.tgz &&\
-#    rm RE-BC5CDR-BioGPT.tgz
-#
-##RE-DDI-BioGPT
-#RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/RE-DDI-BioGPT.tgz &&\
-#    tar -zxvf RE-DDI-BioGPT.tgz &&\
-#    rm RE-DDI-BioGPT.tgz
-#
-##RE-DTI-BioGPT
-#RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/RE-DTI-BioGPT.tgz &&\
-#    tar -zxvf RE-DTI-BioGPT.tgz &&\
-#    rm RE-DTI-BioGPT.tgz
-#
-##DC-HoC-BioGPT
-#RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/DC-HoC-BioGPT.tgz &&\
-#    tar -zxvf DC-HoC-BioGPT.tgz &&\
-#    rm DC-HoC-BioGPT.tgz
+#Pre-Trained BioGPT-Large
+RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/Pre-trained-BioGPT-Large.tgz &&\
+    tar -zxvf Pre-trained-BioGPT-Large.tgz &&\
+    rm Pre-trained-BioGPT-Large.tgz
 
+#QA-PubMedQA-BioGPT
+RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/QA-PubMedQA-BioGPT.tgz &&\
+    tar -zxvf QA-PubMedQA-BioGPT.tgz &&\
+    rm QA-PubMedQA-BioGPT.tgz
+
+#QA-PubMedQA-BioGPT-Large
+RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/QA-PubMedQA-BioGPT-Large.tgz &&\
+    tar -zxvf QA-PubMedQA-BioGPT-Large.tgz &&\
+    rm QA-PubMedQA-BioGPT-Large.tgz
+
+#RE-BC5CDR-BioGPT
+RUN https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/RE-BC5CDR-BioGPT.tgz &&\
+    tar -zxvf RE-BC5CDR-BioGPT.tgz &&\
+    rm RE-BC5CDR-BioGPT.tgz
+
+#RE-DDI-BioGPT
+RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/RE-DDI-BioGPT.tgz &&\
+    tar -zxvf RE-DDI-BioGPT.tgz &&\
+    rm RE-DDI-BioGPT.tgz
+
+#RE-DTI-BioGPT
+RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/RE-DTI-BioGPT.tgz &&\
+    tar -zxvf RE-DTI-BioGPT.tgz &&\
+    rm RE-DTI-BioGPT.tgz
+
+#DC-HoC-BioGPT
+RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/DC-HoC-BioGPT.tgz &&\
+    tar -zxvf DC-HoC-BioGPT.tgz &&\
+    rm DC-HoC-BioGPT.tgz
 WORKDIR /app/BioGPT
 
 #Run preprocess for all models
@@ -92,4 +93,6 @@ RUN export MOSES=${PWD}/mosesdecoder &&\
     bash preprocess_large.sh &&\
     cd ../../
 
-ENTRYPOINT [ "python3", "-m" , "application"]
+RUN pip install gunicorn
+
+ENTRYPOINT [ "gunicorn", "--bind", "0.0.0.0:8000", "application:application" ]
