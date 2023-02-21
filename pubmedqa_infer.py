@@ -11,10 +11,10 @@ m = TransformerLanguageModelPrompt.from_pretrained(
         tokenizer='moses',
         bpe='fastbpe',
         bpe_codes="data/bpecodes",
-        min_len=100,
-        max_len_b=1024)
+        max_len_b=1024,
+        beam=1)
 
-#m.cuda()
+m.cuda()
 
 src_tokens = m.encode(src_text)
 generate = m.generate([src_tokens], beam=1)[0]
