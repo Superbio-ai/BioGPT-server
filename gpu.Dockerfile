@@ -95,4 +95,4 @@ RUN export MOSES=${PWD}/mosesdecoder &&\
 
 RUN pip install gunicorn
 
-ENTRYPOINT [ "gunicorn", "--bind", "0.0.0.0:8000", "application:application" ]
+ENTRYPOINT [ "gunicorn", "--bind", "0.0.0.0:8000", "--timeout", "120", "application:application" ]
