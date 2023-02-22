@@ -37,49 +37,49 @@ WORKDIR /app/BioGPT
 COPY server server/
 COPY data data/
 COPY application.py .
-RUN mkdir -p checkpoints/
-WORKDIR /app/BioGPT/checkpoints
-
-#Pre-Trained BioGPT
-RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/Pre-trained-BioGPT.tgz &&\
-    tar -zxvf Pre-trained-BioGPT.tgz &&\
-    rm Pre-trained-BioGPT.tgz
-
-#Pre-Trained BioGPT-Large
-RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/Pre-trained-BioGPT-Large.tgz &&\
-    tar -zxvf Pre-trained-BioGPT-Large.tgz &&\
-    rm Pre-trained-BioGPT-Large.tgz
-
-#QA-PubMedQA-BioGPT
-RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/QA-PubMedQA-BioGPT.tgz &&\
-    tar -zxvf QA-PubMedQA-BioGPT.tgz &&\
-    rm QA-PubMedQA-BioGPT.tgz
-
-#QA-PubMedQA-BioGPT-Large
-RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/QA-PubMedQA-BioGPT-Large.tgz &&\
-    tar -zxvf QA-PubMedQA-BioGPT-Large.tgz &&\
-    rm QA-PubMedQA-BioGPT-Large.tgz
-
-#RE-BC5CDR-BioGPT
-RUN https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/RE-BC5CDR-BioGPT.tgz &&\
-    tar -zxvf RE-BC5CDR-BioGPT.tgz &&\
-    rm RE-BC5CDR-BioGPT.tgz
-
-#RE-DDI-BioGPT
-RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/RE-DDI-BioGPT.tgz &&\
-    tar -zxvf RE-DDI-BioGPT.tgz &&\
-    rm RE-DDI-BioGPT.tgz
-
-#RE-DTI-BioGPT
-RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/RE-DTI-BioGPT.tgz &&\
-    tar -zxvf RE-DTI-BioGPT.tgz &&\
-    rm RE-DTI-BioGPT.tgz
-
-#DC-HoC-BioGPT
-RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/DC-HoC-BioGPT.tgz &&\
-    tar -zxvf DC-HoC-BioGPT.tgz &&\
-    rm DC-HoC-BioGPT.tgz
-WORKDIR /app/BioGPT
+#RUN mkdir -p checkpoints/
+#WORKDIR /app/BioGPT/checkpoints
+#
+##Pre-Trained BioGPT
+#RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/Pre-trained-BioGPT.tgz &&\
+#    tar -zxvf Pre-trained-BioGPT.tgz &&\
+#    rm Pre-trained-BioGPT.tgz
+#
+##Pre-Trained BioGPT-Large
+#RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/Pre-trained-BioGPT-Large.tgz &&\
+#    tar -zxvf Pre-trained-BioGPT-Large.tgz &&\
+#    rm Pre-trained-BioGPT-Large.tgz
+#
+##QA-PubMedQA-BioGPT
+#RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/QA-PubMedQA-BioGPT.tgz &&\
+#    tar -zxvf QA-PubMedQA-BioGPT.tgz &&\
+#    rm QA-PubMedQA-BioGPT.tgz
+#
+##QA-PubMedQA-BioGPT-Large
+#RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/QA-PubMedQA-BioGPT-Large.tgz &&\
+#    tar -zxvf QA-PubMedQA-BioGPT-Large.tgz &&\
+#    rm QA-PubMedQA-BioGPT-Large.tgz
+#
+##RE-BC5CDR-BioGPT
+#RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/RE-BC5CDR-BioGPT.tgz &&\
+#    tar -zxvf RE-BC5CDR-BioGPT.tgz &&\
+#    rm RE-BC5CDR-BioGPT.tgz
+#
+##RE-DDI-BioGPT
+#RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/RE-DDI-BioGPT.tgz &&\
+#    tar -zxvf RE-DDI-BioGPT.tgz &&\
+#    rm RE-DDI-BioGPT.tgz
+#
+##RE-DTI-BioGPT
+#RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/RE-DTI-BioGPT.tgz &&\
+#    tar -zxvf RE-DTI-BioGPT.tgz &&\
+#    rm RE-DTI-BioGPT.tgz
+#
+##DC-HoC-BioGPT
+#RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/DC-HoC-BioGPT.tgz &&\
+#    tar -zxvf DC-HoC-BioGPT.tgz &&\
+#    rm DC-HoC-BioGPT.tgz
+#WORKDIR /app/BioGPT
 
 #Run preprocess for all models
 RUN export MOSES=${PWD}/mosesdecoder &&\
