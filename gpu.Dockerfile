@@ -25,6 +25,7 @@ RUN g++ -std=c++11 -pthread -O3 fastBPE/main.cc -IfastBPE -o fast
 WORKDIR /app/BioGPT
 
 #Install requirements and upgrade cudatoolkit
+COPY requirements.txt .
 RUN pip install -r requirements.txt
 RUN conda install -y pytorch==1.12.0 torchvision==0.13.0 torchaudio==0.12.0 cudatoolkit=11.6 -c pytorch -c conda-forge
 
@@ -33,16 +34,17 @@ RUN pip install fastBPE
 
 #Install models
 WORKDIR /app/BioGPT
-COPY server .
-COPY data .
-RUN mkdir -p checkpoints/
-WORKDIR /app/BioGPT/checkpoints
-
-#Pre-Trained BioGPT
-RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/Pre-trained-BioGPT.tgz &&\
-    tar -zxvf Pre-trained-BioGPT.tgz &&\
-    rm Pre-trained-BioGPT.tgz
-
+COPY server server/
+COPY data data/
+COPY application.py .
+#RUN mkdir -p checkpoints/
+#WORKDIR /app/BioGPT/checkpoints
+#
+##Pre-Trained BioGPT
+#RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/Pre-trained-BioGPT.tgz &&\
+#    tar -zxvf Pre-trained-BioGPT.tgz &&\
+#    rm Pre-trained-BioGPT.tgz
+#
 ##Pre-Trained BioGPT-Large
 #RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/Pre-trained-BioGPT-Large.tgz &&\
 #    tar -zxvf Pre-trained-BioGPT-Large.tgz &&\
@@ -59,7 +61,7 @@ RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoint
 #    rm QA-PubMedQA-BioGPT-Large.tgz
 #
 ##RE-BC5CDR-BioGPT
-#RUN https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/RE-BC5CDR-BioGPT.tgz &&\
+#RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/RE-BC5CDR-BioGPT.tgz &&\
 #    tar -zxvf RE-BC5CDR-BioGPT.tgz &&\
 #    rm RE-BC5CDR-BioGPT.tgz
 #
@@ -77,8 +79,7 @@ RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoint
 #RUN wget https://msramllasc.blob.core.windows.net/modelrelease/BioGPT/checkpoints/DC-HoC-BioGPT.tgz &&\
 #    tar -zxvf DC-HoC-BioGPT.tgz &&\
 #    rm DC-HoC-BioGPT.tgz
-
-WORKDIR /app/BioGPT
+#WORKDIR /app/BioGPT
 
 #Run preprocess for all models
 RUN export MOSES=${PWD}/mosesdecoder &&\
@@ -92,4 +93,6 @@ RUN export MOSES=${PWD}/mosesdecoder &&\
     bash preprocess_large.sh &&\
     cd ../../
 
-ENTRYPOINT [ "python3", "-m" , "application"]
+RUN pip install gunicorn
+
+ENTRYPOINT [ "gunicorn", "--bind", "0.0.0.0:8000", "application:application" ]

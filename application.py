@@ -16,6 +16,7 @@ bcrypt = Bcrypt(application)
 init_routes(API)
 set_logging(application)
 
+
 if __name__ == "__main__":
     _ = Config()
     application.run(host='0.0.0.0', port=8001)
