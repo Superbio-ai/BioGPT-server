@@ -5,6 +5,8 @@ from server.utils import singleton
 
 
 class DefaultModel:
+    def __init__(self):
+        self.beam = 1
     @classmethod
     def clean_output(cls, output):
         return output.split("learned9")[-1]
@@ -12,6 +14,7 @@ class DefaultModel:
 
 class PretrainedBioGPT(DefaultModel):
     def __init__(self):
+        self.beam = 5
         self.m = TransformerLanguageModel.from_pretrained(
             "checkpoints/Pre-trained-BioGPT",
             "checkpoint.pt",
@@ -30,6 +33,7 @@ class PretrainedBioGPT(DefaultModel):
 
 class PretrainedBioGPTLarge(DefaultModel):
     def __init__(self):
+        self.beam = 5
         self.m = TransformerLanguageModel.from_pretrained(
             "checkpoints/Pre-trained-BioGPT-Large",
             "checkpoint.pt",
@@ -47,6 +51,7 @@ class PretrainedBioGPTLarge(DefaultModel):
 
 class Pubmed(DefaultModel):
     def __init__(self):
+        super().__init__()
         self.m = TransformerLanguageModelPrompt.from_pretrained(
             "checkpoints/QA-PubMedQA-BioGPT",
             "checkpoint_avg.pt",
@@ -61,6 +66,7 @@ class Pubmed(DefaultModel):
 
 class PubmedLarge(DefaultModel):
     def __init__(self):
+        super().__init__()
         self.m = TransformerLanguageModelPrompt.from_pretrained(
             "checkpoints/QA-PubMedQA-BioGPT-Large",
             "checkpoint_avg.pt",
@@ -77,6 +83,7 @@ class PubmedLarge(DefaultModel):
 @singleton
 class DTI(DefaultModel):
     def __init__(self):
+        super().__init__()
         self.m = TransformerLanguageModelPrompt.from_pretrained(
             "checkpoints/RE-DTI-BioGPT",
             "checkpoint_avg.pt",
@@ -91,6 +98,7 @@ class DTI(DefaultModel):
 
 class DDI(DefaultModel):
     def __init__(self):
+        super().__init__()
         self.m = TransformerLanguageModelPrompt.from_pretrained(
             "checkpoints/RE-DDI-BioGPT",
             "checkpoint_avg.pt",
@@ -105,6 +113,7 @@ class DDI(DefaultModel):
 
 class BC5CDR(DefaultModel):
     def __init__(self):
+        super().__init__()
         self.m = TransformerLanguageModelPrompt.from_pretrained(
             "checkpoints/RE-BC5CDR-BioGPT",
             "checkpoint_avg.pt",
@@ -119,6 +128,7 @@ class BC5CDR(DefaultModel):
 
 class DocumentClassification(DefaultModel):
     def __init__(self):
+        super().__init__()
         self.m = TransformerLanguageModelPrompt.from_pretrained(
             "checkpoints/DC-HoC-BioGPT",
             "checkpoint_last.pt",

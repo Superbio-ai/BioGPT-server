@@ -22,12 +22,13 @@ class RunBioGptApi(Resource):
         question = request.json.get('question')
         model_name = request.json.get('model_name')
         beam = request.json.get('beam')
-        if not beam:
-            beam = 5
-        else:
-            beam = int(beam)
+
         model = MODEL_CONFIGS[model_name]()
         m = model.m
+        if not beam:
+            beam = model.beam
+        else:
+            beam = int(beam)
 
         config = Config()
         if not config.local_depployment:
